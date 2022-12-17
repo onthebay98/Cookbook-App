@@ -1,3 +1,7 @@
+from main import Recipe
+from bs4 import BeautifulSoup
+import requests
+
 def allRecipesScraper(recipe):
     '''
         input: RecipeObject without ingredient or prep-time data
@@ -10,14 +14,14 @@ def allRecipesScraper(recipe):
     for i in range(len(text)):
         if "Prep Time:" in text[i]:
              pass
-            
+    print(recipe)
     return recipe
 
 def allRecipesInitializer(URL):
     '''
-        instantiates Recipe object from All Recipes URL
+        instantiates Recipe object using allrecipes.com URL string
         
-        input: All Recipes URL
+        input: URL from allrecipes.com
         
         output: Recipe object with all data populated
     '''
