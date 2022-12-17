@@ -1,5 +1,5 @@
-from main import Recipe
-from main import Ingredient
+from objects import Recipe
+from objects import Ingredient
 from bs4 import BeautifulSoup
 import requests
 
@@ -8,18 +8,30 @@ def allRecipesInitializer(URL):
         input: URL from allrecipes.com
         
         output: Recipe object with all data populated
+            - dish: str
+            - URL: str
+            - ingredients: list of Ingredients
+            - preptime: float, minutes
+            - cooktime = float, minutes
+            - totaltime = float, minutes
+            - servings = str
     '''
     
     soup = BeautifulSoup(requests.get(URL).content, "html.parser")
     
-    recipe = Recipe(soup.title.string.replace(' Recipe',''), # name of dish
-                    URL)
+    recipe = Recipe(soup.title.string.replace(' Recipe',''), URL) # create Recipe object initialized with dish name and URL
     
-    return allRecipesIngredientParser(recipe, soup)
+    allRecipesIngredientParser(recipe, soup) # add ingredients
+    
+    allRecipesTimeAndServingsParser(recipe, soup) # add prep-time
+    
+    return recipe
 
 def allRecipesIngredientParser(recipe, soup):
     '''
         adds ingredients to the recipe as a list of Ingredient objects
+        
+        modifies recipe object
     '''
     ingredients = set()
     
@@ -42,5 +54,17 @@ def allRecipesIngredientParser(recipe, soup):
             ingredients.add(Ingredient(unit, quantity, ingredient))
     
     recipe.ingredients = ingredients
+
+def allRecipesTimeAndServingsParser(recipe, soup):
+    '''
+        adds prep time, cooking time, total time, and serving size to Recipe object
+
+        modifies recipe object
+    '''
+    recipe_attrs = soup.find("div", {"id": "recipe-details_1-0"}).find_all("div", {"class": "mntl-recipe-details__value"})
+    attrs = [attribute.text.strip() for attribute in recipe_attrs] # get 5 attributes; we only need the first four
     
-    return recipe
+    recipe.preptime = attrs[0]
+    recipe.cooktime = attrs[1]
+    recipe.totaltime = attrs[2]
+    recipe.servings = attrs[3]

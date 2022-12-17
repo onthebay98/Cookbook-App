@@ -1,29 +1,18 @@
-class Recipe:
-    def __init__(self, dish, URL):
-        self.dish = dish
-        self.URL = URL
-        self.ingredients = None
-        self.preptime = None
-    
-    def __str__(self):
-        
-        if self.preptime is None:
-            self.preptime = 'unspecified'
-        
-        return f"This is a recipe for {self.dish} from {self.URL} with {self.preptime} prep-time"
-    
-class Ingredient:
-    def __init__(self, unit, quantity, ingredient):
-        self.unit = unit
-        self.quantity = quantity
-        self.ingredient = ingredient
-        
-    def __str__(self):
-        if self.unit is None:
-            self.unit = ''
-        if self.quantity is None:
-            self.quantity = ''
-        if self.ingredient is None:
-            self.ingredient = ''
+from allrecipes import allRecipesInitializer
 
-        return " ".join(f"{self.unit} {self.quantity} {self.ingredient}".split())
+def __main__(URL):
+    if "allrecipes" in URL:
+        recipe = allRecipesInitializer(URL)
+        return recipe
+        # add some error catch for 404s?
+    else:
+        print("Sorry, we don't support recipes from this website yet.")
+        
+recipe = __main__(URL = "https://www.allrecipes.com/recipe/158799/stout-braised-lamb-shanks/")
+
+print(recipe)
+
+print()
+print('Ingredients:')
+for ingredient in recipe.ingredients:
+    print(ingredient)
