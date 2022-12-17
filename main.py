@@ -1,4 +1,5 @@
 from allrecipes import allRecipesInitializer
+from helpers import minutesToString
 
 def __main__(URL):
     if "allrecipes" in URL:
@@ -16,3 +17,6 @@ print()
 print('Ingredients:')
 for ingredient in recipe.ingredients:
     print(ingredient)
+
+print()
+print(f'Total cook time: {minutesToString(recipe.totaltime)}')

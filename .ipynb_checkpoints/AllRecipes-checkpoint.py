@@ -3,6 +3,8 @@ from objects import Ingredient
 from bs4 import BeautifulSoup
 import requests
 
+from helpers import stringToMinutes
+
 def allRecipesInitializer(URL):
     '''
         input: URL from allrecipes.com
@@ -11,9 +13,9 @@ def allRecipesInitializer(URL):
             - dish: str
             - URL: str
             - ingredients: list of Ingredients
-            - preptime: float, minutes
-            - cooktime = float, minutes
-            - totaltime = float, minutes
+            - preptime: int, minutes
+            - cooktime = int, minutes
+            - totaltime = int, minutes
             - servings = str
     '''
     
@@ -21,9 +23,9 @@ def allRecipesInitializer(URL):
     
     recipe = Recipe(soup.title.string.replace(' Recipe',''), URL) # create Recipe object initialized with dish name and URL
     
-    allRecipesIngredientParser(recipe, soup) # add ingredients
+    allRecipesIngredientParser(recipe, soup) # add ingredients to Recipe
     
-    allRecipesTimeAndServingsParser(recipe, soup) # add prep-time
+    allRecipesTimeAndServingsParser(recipe, soup) # add prep-time and servings to Recipe
     
     return recipe
 
@@ -64,7 +66,7 @@ def allRecipesTimeAndServingsParser(recipe, soup):
     recipe_attrs = soup.find("div", {"id": "recipe-details_1-0"}).find_all("div", {"class": "mntl-recipe-details__value"})
     attrs = [attribute.text.strip() for attribute in recipe_attrs] # get 5 attributes; we only need the first four
     
-    recipe.preptime = attrs[0]
-    recipe.cooktime = attrs[1]
-    recipe.totaltime = attrs[2]
+    recipe.preptime = stringToMinutes(attrs[0])
+    recipe.cooktime = stringToMinutes(attrs[1])
+    recipe.totaltime = stringToMinutes(attrs[2])
     recipe.servings = attrs[3]
