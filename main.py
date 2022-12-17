@@ -13,7 +13,17 @@ class Recipe:
         return f"This is a recipe for {self.dish} from {self.URL} with {self.preptime} prep-time"
     
 class Ingredient:
-    def __init__(self):
-        self.unit = None
-        self.quantity = None
-        self.ingredient = None
+    def __init__(self, unit, quantity, ingredient):
+        self.unit = unit
+        self.quantity = quantity
+        self.ingredient = ingredient
+        
+    def __str__(self):
+        if self.unit is None:
+            self.unit = ''
+        if self.quantity is None:
+            self.quantity = ''
+        if self.ingredient is None:
+            self.ingredient = ''
+
+        return " ".join(f"{self.unit} {self.quantity} {self.ingredient}".split())
