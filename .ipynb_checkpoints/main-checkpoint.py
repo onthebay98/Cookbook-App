@@ -11,6 +11,10 @@ def __main__(URL):
         
 recipe = __main__(URL = "https://www.allrecipes.com/recipe/158799/stout-braised-lamb-shanks/")
 
+print(vars(recipe))
+
+print()
+
 print(recipe)
 
 print()

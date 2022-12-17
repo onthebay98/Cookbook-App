@@ -66,6 +66,7 @@ def allRecipesTimeAndServingsParser(recipe, soup):
     recipe_attrs = soup.find("div", {"id": "recipe-details_1-0"}).find_all("div", {"class": "mntl-recipe-details__value"})
     attrs = [attribute.text.strip() for attribute in recipe_attrs] # get 5 attributes; we only need the first four
     
+    # adds all desired attributes
     recipe.preptime = stringToMinutes(attrs[0])
     recipe.cooktime = stringToMinutes(attrs[1])
     recipe.totaltime = stringToMinutes(attrs[2])
