@@ -7,12 +7,13 @@ class Recipe:
         self.cooktime = None
         self.totaltime = None
         self.servings = None
+        self.directions = None
     
     def __str__(self):
         if self.servings is None:
             self.servings = "an unspecified number of"
         
-        return f"Recipe for {self.dish}. Serves {self.servings}. From {self.URL}"
+        return f"Recipe for {self.dish}. Serves {self.servings} people. From {self.URL}"
     
 class Ingredient:
     def __init__(self, unit, quantity, ingredient):

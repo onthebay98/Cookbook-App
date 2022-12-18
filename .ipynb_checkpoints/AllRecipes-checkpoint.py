@@ -17,6 +17,7 @@ def allRecipesInitializer(URL):
             - cooktime = int, minutes
             - totaltime = int, minutes
             - servings = str
+            - directions = list
     '''
     
     soup = BeautifulSoup(requests.get(URL).content, "html.parser")
@@ -26,6 +27,8 @@ def allRecipesInitializer(URL):
     allRecipesIngredientParser(recipe, soup) # add ingredients to Recipe
     
     allRecipesTimeAndServingsParser(recipe, soup) # add prep-time and servings to Recipe
+    
+    allRecipesDirections(recipe, soup) # add directions to Recipe
     
     return recipe
 
@@ -71,3 +74,6 @@ def allRecipesTimeAndServingsParser(recipe, soup):
     recipe.cooktime = stringToMinutes(attrs[1])
     recipe.totaltime = stringToMinutes(attrs[2])
     recipe.servings = attrs[3]
+    
+def allRecipesDirections(recipe, soup):
+    recipe.directions = [x.text.strip() for x in soup.find("div", {"id": "recipe__steps-content_1-0"}).find_all("p")]

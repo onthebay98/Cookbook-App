@@ -1,0 +1,12 @@
+get recipe from soup; save as list of steps?
+
+pull nutrition facts, directions
+
+build in robust error checks; try/except catches
+
+add a central database that collects recipe objects?
+
+FIX: allRecipesTimeAndServingsParser()
+- I can't use list indexing to do this - not all recipes have all 4 attributes
+- find a new way to parse this
+
