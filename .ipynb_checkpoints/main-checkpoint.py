@@ -1,5 +1,5 @@
 from allrecipes import allRecipesInitializer
-from helpers import minutesToString
+from utils import minutesToString
 
 def __main__(URL):
     if "allrecipes" in URL.lower():
@@ -8,8 +8,11 @@ def __main__(URL):
         # add some error catch for 404s?
     else:
         print("Sorry, we don't support recipes from this website yet.")
-        
-recipe = __main__(URL = "https://www.allrecipes.com/recipe/158799/stout-braised-lamb-shanks/")
+
+print('Enter the URL of your recipe:')
+URL = str(input())
+
+recipe = __main__(URL)
 
 def printRecipe(recipe):
     print()
@@ -34,8 +37,8 @@ def printRecipe(recipe):
 
     for i in range(len(directions)):
         print(f'Step {i+1}: {directions[i]}')
+        print()
 
-    print()
     print()
     print()
     print()

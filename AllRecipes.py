@@ -3,7 +3,7 @@ from objects import Ingredient
 from bs4 import BeautifulSoup
 import requests
 
-from helpers import stringToMinutes
+from utils import stringToMinutes
 
 def allRecipesInitializer(URL):
     '''
@@ -66,14 +66,20 @@ def allRecipesTimeAndServingsParser(recipe, soup):
 
         modifies recipe object
     '''
-    recipe_attrs = soup.find("div", {"id": "recipe-details_1-0"}).find_all("div", {"class": "mntl-recipe-details__value"})
-    attrs = [attribute.text.strip() for attribute in recipe_attrs] # get 5 attributes; we only need the first four
-    
-    # adds all desired attributes
-    recipe.preptime = stringToMinutes(attrs[0])
-    recipe.cooktime = stringToMinutes(attrs[1])
-    recipe.totaltime = stringToMinutes(attrs[2])
-    recipe.servings = attrs[3]
-    
+    timesServings = [x.replace('\n', ' ').replace("  ", " ").strip() for x in list(soup.find("div", {"id": "recipe-details_1-0"}))[1].text.strip().split('\n\n\n')]
+    timesServingsDict = dict(x.split(": ") for x in timesServings)
+
+    if 'Prep Time' in timesServingsDict:
+        recipe.preptime = stringToMinutes(timesServingsDict['Prep Time'])
+        
+    if 'Cook Time' in timesServingsDict:
+        recipe.cooktime = stringToMinutes(timesServingsDict['Cook Time'])
+
+    if 'Total Time' in timesServingsDict:
+        recipe.totaltime = stringToMinutes(timesServingsDict['Total Time'])
+        
+    if 'Servings' in timesServingsDict:
+        recipe.servings = stringToMinutes(timesServingsDict['Servings'])
+        
 def allRecipesDirections(recipe, soup):
     recipe.directions = [x.text.strip() for x in soup.find("div", {"id": "recipe__steps-content_1-0"}).find_all("p")]
