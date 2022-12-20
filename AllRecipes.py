@@ -18,6 +18,7 @@ def allRecipesInitializer(URL):
             - totaltime = int, minutes
             - servings = str
             - directions = list
+            - picture
     '''
     
     soup = BeautifulSoup(requests.get(URL).content, "html.parser")
@@ -29,6 +30,8 @@ def allRecipesInitializer(URL):
     allRecipesTimeAndServingsParser(recipe, soup) # add prep-time and servings to Recipe
     
     allRecipesDirections(recipe, soup) # add directions to Recipe
+    
+    allRecipesImage(recipe, soup)
     
     return recipe
 
@@ -83,3 +86,9 @@ def allRecipesTimeAndServingsParser(recipe, soup):
         
 def allRecipesDirections(recipe, soup):
     recipe.directions = [x.text.strip() for x in soup.find("div", {"id": "recipe__steps-content_1-0"}).find_all("p")]
+    
+def allRecipesImage(recipe, soup):
+    if soup.findAll('img')[0].attrs['src'].strip() == '':
+        recipe.picture = soup.findAll('img')[0].attrs['data-src'].strip()
+    else:
+        recipe.picture = soup.findAll('img')[0].attrs['src'].strip()

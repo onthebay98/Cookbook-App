@@ -8,6 +8,7 @@ class Recipe:
         self.totaltime = None
         self.servings = None
         self.directions = None
+        self.picture = None
     
     def __str__(self):
         if self.servings is None:

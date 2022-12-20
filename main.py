@@ -39,6 +39,8 @@ def printRecipe(recipe):
         print(f'Step {i+1}: {directions[i]}')
         print()
 
+        
+    print(recipe.picture)
     print()
     print()
     print()
